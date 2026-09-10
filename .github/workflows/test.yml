@@ -19,6 +19,8 @@ jobs:
           php-version: '8.2'
           extensions: mbstring, xml, ctype, iconv, mysql, pdo, bcmath, curl, gd, zip
 
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Generate key
         run: php artisan key:generate
