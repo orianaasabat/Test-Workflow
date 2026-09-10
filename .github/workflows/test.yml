@@ -19,6 +19,10 @@ jobs:
           php-version: '8.2'
           extensions: mbstring, xml, ctype, iconv, mysql, pdo, bcmath, curl, gd, zip
 
+      # ⬇️ THIS IS THE MISSING STEP ⬇️
+      - name: Install Composer Dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
