@@ -1,0 +1,32 @@
+name: test pull between branches
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'   # <-- CHANGED FROM 8.2 to 8.3
+          extensions: mbstring, xml, ctype, iconv, mysql, pdo, bcmath, curl, gd, zip
+          coverage: none
+
+      - name: Install Composer Dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Run tests
+        run: php artisan test
+        env:
+          GITHUB_TOKEN: ${{ secrets.Test_TOKEN }}
