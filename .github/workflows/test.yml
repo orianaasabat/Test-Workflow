@@ -10,17 +10,25 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v3
-      # - name: Set up Python
-      #   uses: actions/setup-python@v4
-      #   with:
-      #     python-version: '3.11'
-      # - name: Install dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install -r requirements.txt
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, mysql, pdo, bcmath, curl, gd, zip
+
+      - name: Install Composer Dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Generate key
+        run: php artisan key:generate
+
       - name: Run tests
-        run: |
-          php artisan test
-        env: 
+        run: php artisan test
+        env:
           GITHUB_TOKEN: ${{ secrets.Test_TOKEN }}
