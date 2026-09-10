@@ -1,7 +1,7 @@
 name: test run manual
 on:
   schedule:
-    - cron: '34 3 * * *'
+    - cron: '38 12 * * *'
 jobs:
   test:
     runs-on: ubuntu-latest
