@@ -16,10 +16,10 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'   # <-- CHANGED FROM 8.2 to 8.3
           extensions: mbstring, xml, ctype, iconv, mysql, pdo, bcmath, curl, gd, zip
+          coverage: none
 
-      # ⬇️ THIS IS THE MISSING STEP ⬇️
       - name: Install Composer Dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
